@@ -1,15 +1,5 @@
 #this munge script cleans raw data and creates time series, dataframes, and variables that are used in the toy model
 
-
-#generating time series infrastructure data
-#month_day <- c(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
-
-#month_series <- rep(c(rep(1, 31*48), rep(2, 28*48), rep(3, 31*48), rep(4, 30*48), rep(5, 31*48), rep(6, 30*48), rep(7, 31*48), rep(8, 31*48), rep(9, 30*48), rep(10, 31*48), rep(11, 30*48), rep(12, 31*48)), years)
-
-
-
-
-
 #creating a time series of precipitation data at BCI for an average year.
 monthly_rain_bci <- monthly_rain_bci$Average[-13]
 daily_rain <- monthly_rain_bci/30.4

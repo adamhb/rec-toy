@@ -38,6 +38,13 @@ pct_light_seedling_layer <- 0.02
 c_frac <- 0.4 # the fraction of biomass that is carbon
 
 
+#generating time series infrastructure
+month_day <- c(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
+
+month_series <- rep(c(rep(1, 31*48), rep(2, 28*48), rep(3, 31*48), rep(4, 30*48), rep(5, 31*48), rep(6, 30*48), rep(7, 31*48), rep(8, 31*48), rep(9, 30*48), rep(10, 31*48), rep(11, 30*48), rep(12, 31*48)), years)
+
+
+
 
 #Importing Data
 
