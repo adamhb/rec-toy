@@ -1,0 +1,11 @@
+sp,PFT,pct_mort_dry,pct_mort_wet,pct_mort_drought
+DIP,DT,0.35,0.35,0
+OUR,DT,0.05,0,0.05
+GAR,DT,0.05,0,0.05
+HOR,DT,0.07,0.02,0.05
+ING,DT,0.2,0.18,0.02
+BEI,DI,1,0.57,0.43
+PTRI,DI,0.82,0.08,0.74
+CAL,DI,0.8,0,0.8
+VIR,DI,0.8,0.05,0.75
+XYL,DI,0.62,0,0.62
