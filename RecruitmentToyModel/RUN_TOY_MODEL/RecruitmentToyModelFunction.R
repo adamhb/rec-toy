@@ -1,8 +1,5 @@
 #Recruitment Toy Model
 
-#load.project()
-
-
 #all input units are in g of carbon
 rec_toy_model <- function(years = 1, 
                       cmc_ind_0 = 13e6,#starting amount of biomass for the adult cohort (g C)
@@ -82,7 +79,7 @@ rec_toy_model <- function(years = 1,
       
       PFT.x[i+1] <- PFT
         
-      cmc_ind[i+1] <- cmc_ind[i] + (co_LAI_ind[i] * rad[i] * epsilon * frac_NPP2GPP * frac_NPP2growth * (1 - efrac(N = N_co[i], co_dbh_ind = co_dbh_ind[i])))
+      cmc_ind[i+1] <- cmc_ind[i] + (co_LAI_ind[i] * rad[i] * epsilon * frac_NPP2GPP * frac_NPP2growth * (1 - efrac(N = N_co[i], co_dbh_ind = co_dbh_ind[i], PFT = PFT.x[i])))
       
       co_dbh_ind[i+1] <- C2dbh(cmc_ind[i+1])
       

@@ -1,5 +1,14 @@
 #model_runs
 
+setwd("C:/Users/ahanb/OneDrive/Documents/RecruitmentToyModel/RecruitmentToyModel")
+source("./data&params.R")
+source("./clean/munge.R")
+source("./funcs/other_toy_model_funcs.R")
+source("./funcs/frac_rec_Kobe.R")
+source("./funcs/H20_mort.R")
+source("./funcs/light_mort.R")
+source("./funcs/frac_emerg.R")
+source("./RUN_TOY_MODEL/RecruitmentToyModelFunction.R")
 
               toymodout <- rec_toy_model(years = 1, 
                             cmc_ind_0 = 2e4,#starting amount of biomass for the adult cohort (g C)
@@ -20,7 +29,7 @@
                             n_PFTs = 2,
                             PFTs = c("early", "late"))
               
-              run_name <- "YOUNG_cohort_HIGH_light"
+              run_name <- "test"
               
               
               

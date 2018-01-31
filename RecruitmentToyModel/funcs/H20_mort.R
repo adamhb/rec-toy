@@ -10,15 +10,12 @@
   sgwc_T  <- c(0.78, 0.47, 0.34)
   matric_T <- c(0, -0.5, -3.5)
   d <- data.frame(sgwc_T = sgwc_T, matric_T = matric_T)
-  plot(sgwc_T,matric_T)
+  #plot(sgwc_T,matric_T)
   
   sgwc_T2 <- sgwc_T^2
   PTF <- lm(matric_T ~ sgwc_T + sgwc_T2)
   
-  PTF_func <- function(sgwc){
-    matric <- coef(PTF)[3]*sgwc^2 + coef(PTF)[2]*sgwc + coef(PTF)[1]
-    return(matric)
-  }
+  
   
   #Step 2. Replicating the time series data 
   

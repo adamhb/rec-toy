@@ -6,13 +6,10 @@
 #because they include equations specifically for individuals that are too small to have a dbh.
 #using Cordia alliodora for all PFTs (sample for equations included height ranges at small as 10 cm tall.)
 
-seedling_BD2biomass <- function(BD){
-  C <- c()
-  for(i in 1:4){
-    C[i] <- cole_table$a[i]*(BD^(cole_table$b[i]))
-  }
-  return(sum(C)*1000)
-}
+
+
+
+
 
 #the probability that an individual is of reproductive status as a function of dbh (mm)
 prob_repro <- function(k = 0.0125, L = 1, size_mm, Dmax){
@@ -95,7 +92,7 @@ C2dbh <- function(carbon){
 }
 
 
-efrac <- function(N, co_dbh_ind){
+efrac <- function(N, co_dbh_ind, PFT){
   N_repro <- prob_repro(size_mm = co_dbh_ind, Dmax = Dmax[PFT]) * N
   fraction_reproductive <- N_repro / N
   e_frac <- fraction_reproductive * frac_repro #frac repro for now is just a fixed percent of NPP (10%), need better data to get better numbers for this
