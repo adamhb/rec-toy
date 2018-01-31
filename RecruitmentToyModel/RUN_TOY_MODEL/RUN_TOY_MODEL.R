@@ -1,4 +1,8 @@
 #model_runs
+#set wd to where you downloaded the RecruitmentToyModel Repo
+#you can parameterize the model below using all the function arguments in the rec_toy_model function
+#name the output files whatever you like by changing the name of the "run_name" object.
+#output graphs will appear in the "graphs" subdirectory
 
 setwd("C:/Users/ahanb/OneDrive/Documents/RecruitmentToyModel/RecruitmentToyModel")
 source("./data&params.R")
@@ -29,7 +33,7 @@ source("./RUN_TOY_MODEL/RecruitmentToyModelFunction.R")
                             n_PFTs = 2,
                             PFTs = c("early", "late"))
               
-              run_name <- "test"
+              run_name <- "guest_run"
               
               
               
