@@ -1,0 +1,32 @@
+---
+title: "Toy_model_output_March_2018"
+author: "Adam Hanbury-Brown"
+date: "March 17, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+
+toymodout <- rec_toy_model(
+                PFTs = c("early", "late"),
+                PFT_prptn = c(0.5,0.5), #The proportions of each PFT in the model run.
+                years = 1, #how long you run the model for
+                n_PFTs = 2, #the number of PFTs in the model
+                dbh_0 = c(100,100),# the starting dbh of the adult cohorts (early and late) (cm)
+                frac_NPP2GPP = 0.3,#the ratio of GPP to NPP
+                frac_NPP2growth = 0.5,#the fraction of NPP that is used for growth
+                precip = bci_precip_1998,#precipitation data from bci in 2013 or 1998; 1998 is an el Nino Year. Just toggle between "2013" to "1998"
+                soil_moist.x = bci_sm_1998_Lutz_9, #soil moisture data from bci in 2013 or 1998; 1998 is an el Nino Year. Just toggle between "2013" to "1998"
+                pct_light_seedling_layer = 0.20,#relative irradiance at the seedling layer (%top of canopy; 0 - 1) 
+                seedbank_0 = 50000, #the initial mass of carbon in the seedbank (g C). 
+                seedpool_0 = 22750, #the initial mass of carbon in the seedling pool (g C). I initialize this at 22,750 g per ha after a back of the envelope calculation using the seedling dynamics data.
+                litter_0 = 100000, #the initial mass of carbon in the reproductive litterpool (g C)
+                N_0 = 650, #the initial number of seedlings. This is less important because it get calculated from other variables in the model at t = 2. 
+                R_0 = 0, #the initial number of recruits
+                avg_solar_flux_wet = 347.2, #Average irradiance of the wet season (joules per meter squared per second)
+                avg_solar_flux_dry = 462.96, #Average irradiance of the dry season (joules per meter squared per second)
+                dry_season_length = 120)#number of days in the dry season

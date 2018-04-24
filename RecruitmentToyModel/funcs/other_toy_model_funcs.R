@@ -76,7 +76,7 @@ dbh2LAI <- function(dbh = 10){
 #Using Chave function to creat the function that converts total biomass (g of C) to dbh (mm)
 
 y <- seq(from = 1, to = 300, by = 0.25)
-x <- Chave.AGB(dbh = y) * totalbiomass2agb * c_frac
+x <- Chave.AGB(dbh = y) * 1.2 * 0.4
 
 plot(x,y)
 plot(log(x),log(y))

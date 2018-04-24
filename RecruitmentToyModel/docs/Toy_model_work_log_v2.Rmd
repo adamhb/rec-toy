@@ -1,0 +1,187 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+
+```{r}
+plot(cars)
+```
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+
+
+---
+title: "Log of Work on Toy Model"
+output: html_notebook
+---
+
+
+
+```{r}
+plot(cars)
+```
+
+
+2/19/2018
+
+I tried to rework my benchmarking scripts to make them more interpretable and reproducible, but this attempt failed because it would be a week long process. For now I'll have to rely on the reports, presentations, and Rmarkdown word docs that I've created.
+
+2/20/2018
+
+I noticed that the recruitment rates (into the 1 cm size class) that I calculated from the seedling dynamics data that Dan Johnson are two order of magnitude lower than the recruitment rates (into the 1 cm size class) I calculated from the bci forest dynamics plot data.
+
+I tried to use the publicacly available data to reconcile this and use it as another data point. The most I can deduce from that public seedling dynamics data is that 
+
+2/25/2018
+
+The R squared values are way too small. Need to run this as a multivariate glm perhaps? 
+
+Talk to Lara about this again. Perhaps there is a way to use the Ruger approach and relate whats coming in to the 1 cm size class to light and the density of seedlings in each quadrat? I could theoretically do this for the 2005 and 2010 censuses. 
+
+
+If go ahead with Lara's idea:
+
+1. read up on multivariate glm for standardizing variables.
+2. transform data to recruit or no recruit.
+2. run a multivariate glm with early and late.
+
+
+2/27/2018
+
+Talk with Lara. Check the feasibility of my idea to join the dynamics data with the 1cm size class data.
+
+1. Check variation over years of seedling density in the 5x5 plot
+2. Check variation of 5 X 5 plots within a 20 meter plot
+3. Check how many 5x5 plots there are within each 20 meter plot
+4. Check if I can line up the 5x5 meter plots with the 20 m plots.
+
+
+
+The summary stats of standard errors for interannual variation in number of seedlings per 5X5 quadrat
+
+Interannual Means
+Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  1.000   1.000   1.857   2.516   3.143  31.143 
+
+
+Internnual Standard Deviations
+Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+ 0.0000  0.0000  0.5774  0.8787  1.1547 22.5494
+
+Standard Errors
+Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+ 0.0000  0.0000  0.2608  0.3600  0.4899  8.5229 
+
+
+
+Variation within a 20X20 plot
+
+Mean
+
+Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  1.000   2.029   2.512   2.656   3.082  11.931
+  
+
+Sd
+Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  0.000   1.277   1.753   1.919   2.325  13.107 
+
+Se
+Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+ 0.0000  0.1635  0.2175  0.2374  0.2842  1.3042 
+
+
+
+Number of 5x5 plots in each 20x20 plot
+
+Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   1.00   10.00   12.00   12.01   14.00   16.00
+
+
+
+
+Yes, I can line the plots up.
+
+
+Look at the 20 X 20 m death rates, death rate over the same interval. 
+
+
+3/15/2018
+
+Today I am going back to second iteration of the toy model, based off of Kobe's work to:
+
+1. Use the light dependent mortality functions that he found to best fit the species
+2. Understand what parameters in those functions I can tweak to get desired recruitment rates at various light levels. Name those parameters.
+3. Tweak those parameters to get recruitment rates line up with what Ruger finds.
+
+
+Get light dependent recruitment rates for each PFT from Ruger
+Parameterize Kobe's functional form to match Ruger
+
+
+Assumptions of the recruitment function
+1) Early PFT seedlings have a basal diameter of 1.3 cm, late PFTs have a basal diameter of 1.46 cm
+2) Early PFT seedling contain 162.2 grams of carbon, Late PFTs contain 175.35 grams of carbon.
+3) 
+
+
+Note about units of light in recruitment function:
+
+Kobe's light dependent relative growth rate function requires light to be in units of relative irradiance. In order to use his parameters I have to preserve that his functional form. We can still feed the function absolute light, but I will have to make the function convert absolute light to the corresponding relative irradiance at Kobe's field site in La Selva. 
+
+
+Determining benchmarks and how to initialize:
+
+I calculated there to be about 650 seedlings seedlings per hectare on bci. (above 20 cm height and less than 1 cm dbh).
+
+There is also about 30 to 35 g of carbon in each seedling depending on PFT 
+
+
+```{r}
+650*35
+```
+
+Thus, there should be approx. 22,750 g of carbon per ha in the seedling pool at any given time for a plot like bci.
+
+The average number of woody tree recruits per ha per year on bci is 110 individuals. Assume that 90 percent of that is late PFTs.
+
+
+
+
+Pick up: find out why the light dependent recruitment (early PFT) relationship plateaus around 30 percent light when growth rates continue to go up.
+
+
+
+
+
+
+
+
+
+
+
+Issues
+
+The seedling pool is getting too large by about an order of magnitude
+
+
+
+
+
+
+
+
+
+
+
+
+
+

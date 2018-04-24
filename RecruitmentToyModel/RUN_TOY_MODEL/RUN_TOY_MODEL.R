@@ -14,13 +14,13 @@ source("./funcs/light_mort.R")
 source("./funcs/frac_emerg.R")
 source("./RUN_TOY_MODEL/RecruitmentToyModelFunction.R")
 
-              toymodout <- rec_toy_model(years = 1, 
-                            cmc_ind_0 = 2e4,#starting amount of biomass for the adult cohort (g C)
+              toymodout <- rec_toy_model(years = 5,
+                            cmc_ind_0 = 5.5e5,#starting amount of biomass for the adult cohort (g C)
                             frac_NPP2GPP = 0.3,#the fraction of NPP/GPP
                             frac_NPP2growth = 0.5,#the fraction of NPP that is used for growth
                             precip = bci_precip_1998,#precipitation data from bci in 2013; can also put in 1998- an el Nino Year. Just change "2013" to "1998"
                             soil_moist.x = bci_sm_1998_Lutz_9,
-                            pct_light_seedling_layer = 0.7,#the percent light at the seedling layer (%top of canopy) 
+                            pct_light_seedling_layer = 0.25,#the percent light at the seedling layer (%top of canopy) 
                             seedbank_0 = 35000, #the initial mass of carbon in the seedbank (g C)
                             seedpool_0 = 12000, #the initial mass of carbon in the seedling pool (g C)
                             litter_0 = 100000, #the initial mass of carbon in the reproductive litterpool (g C)
@@ -33,7 +33,7 @@ source("./RUN_TOY_MODEL/RecruitmentToyModelFunction.R")
                             n_PFTs = 2,
                             PFTs = c("early", "late"))
               
-              run_name <- "guest_run"
+              run_name <- "mature_cohort_25pct_light_el_nino"
               
               
               

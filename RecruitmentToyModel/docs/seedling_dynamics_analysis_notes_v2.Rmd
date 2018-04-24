@@ -1,0 +1,137 @@
+---
+title: "Analysis of Seedling Dynamics Data"
+output:
+  html_document:
+    df_print: paged
+  pdf_document: default
+---
+
+```{r, warning=FALSE,message=FALSE, echo=FALSE}
+library(ggplot2)
+library(tidyverse)
+library(magrittr)
+```
+
+
+```{r, warning=FALSE,message=FALSE, echo=FALSE}
+source("C:/Users/ahanb/OneDrive/Documents/RecruitmentToyModel/RecruitmentToyModel/comita_seedling_analysis/LOAD_seedling_data.R")
+source("C:/Users/ahanb/OneDrive/Documents/RecruitmentToyModel/RecruitmentToyModel/comita_seedling_analysis/MUNGE_seedling_dyn_data_Johnson.R")
+```
+
+
+**Goal**: To derive a relationship between light in the seedling layer and the fraction of the seedling pool that transitions to the 1 cm size class.
+
+
+
+###Step 1: Convert shade index to relative irradiance (RI)
+
+
+The comita data gives a shade index for each 5X5 m quadrat over each census interval. See more about this shade index on Rick Condit's [website](http://richardcondit.org/data/canopy/bciCanopyReport.php). I replicated the method used in [Ruger et al. 2009; Supporting Information](http://onlinelibrary.wiley.com/doi/10.1111/j.1365-2745.2009.01552.x/full) to convert the indices to RI values. I assumed the 0, 5, 25, 50, 75, 95, and 100th percentiles of the shade indices match the same percentiles of the Wirth et al. 2001 RI data and did a regression through those points.
+
+I compared linear, quadratic, and cubic regressions. The cubic regression was the best fit and is shown as the green line in the graph below.
+```{r, echo=FALSE}
+library(ggplot2)
+ggplot(data = l_shd_data, mapping = aes(x = shd, y = lnRI)) +
+  geom_point() +
+  #geom_line(mapping = aes(x = shd, y = predict(l_shd_m_quad, newdata = l_shd_data))) +
+  #geom_line(mapping = aes(x = shd, y = predict(l_shd_m, newdata = l_shd_data))) +
+  geom_line(mapping = aes(x = shd, y = predict(l_shd_m_3, newdata = l_shd_data)), color = "green1")+
+  xlab("shade index") +
+  ylab("ln(RI)") +
+  labs(title = "Converting shade index to relative irradiance")+
+  theme(plot.title = element_text(vjust = 3, size = 15))
+```
+
+
+
+###Step 2: Convert relative irradiance to the daily mean PFD (umol m^-2^ s^-1^) in each quadrat in each census interval
+
+1) The source data I used was BCI top of canopy daily irradiance in MJm2 per day. 
+
+2) I converted that to the daily mean PFD (umol m^-2^ s^-1^). My PFD variable is essentially the average of all the instantaneous PFD values you would get over the course of a day. I then multiplied that number by the RI values in each quadrat over each census interval to get the mean daily PFD at 0.5 m above the ground in each 5x5 m quadrat during each census interval. This assumes 12 hours of daylight per day. 
+
+
+###Step 3: Visualize the Relationship
+
+A scatter plot (immediately below) doesn't appear to show an obvious relationship for either pft. However, log linear models (further below) do show weak patterns emerging that one might expect.
+```{r}
+ggplot(data = seed_dyn_c_e_l, mapping = aes(x = log(PFD), y = log(daily_t_rate+1), color = pft))+
+  geom_point()+
+  #geom_point(mapping = aes(y =(exp(predict(mod3, newdata = seed_dyn_c))-1), x = log(PFD)))
+  labs(title = "Light-Dependence of Seedling Transition Rates")+
+  xlab("ln(PFD)")+
+  ylab("ln(daily seedling transition rate + 1)")+
+  theme(title = element_text(size = 10))
+
+```
+
+
+
+###Step 4: Log-Linear Models of Light and Transition Rates (Early vs. Late PFTs)
+```{r}
+#early PFT
+mod3_e <- lm(data = seed_dyn_c_e, log(daily_t_rate + 1) ~ log(PFD))
+summary(mod3_e)
+
+#late PFTs
+mod3_l <- lm(data = seed_dyn_c_l, log(daily_t_rate + 1) ~ log(PFD))
+summary(mod3_l)
+
+```
+
+**Conclusion**: The relationship between PFD and daily transition rates is stronger for the early PFTs than for the late PFTs (as we might expect). Neither are significant at the 0.05 level, but early PFTs are significant at the 0.1 level.
+
+
+
+###Visualizing the models
+The graph below shows light dependent seedling transition rates that we might expect given each PFTs life history strategies. The early PFT has higher transition rates under higher light, while the late PFT has higher transition rates under very low light, but then plateaus at a lower transition rate.
+```{r}
+library(ggplot2)
+ggplot(data = data.frame(x = 1:1500, PFD = 1:1500), mapping = aes(x = 1:1500, y = exp(predict(mod3_e, newdata = data.frame(x = 1:1500, PFD = 1:1500)))-1))+
+  geom_point()+
+  geom_point(mapping = aes(x = 1:1500, y = exp(predict(mod3_l, newdata = data.frame(x = 1:1500, PFD = 1:1500)))-1), color = "tan") +
+  labs(title = "Light Dependence of Seedling Transition Rates") +
+  scale_y_continuous(name = "Daily Seedling Transition Rate")+
+  scale_x_continuous(name = "Photon Flux Density", limits = c(0,50))+
+  annotate("text", x = 1000, y = 8e-06, label = "late")+
+  annotate("text", x = 1000, y = 1.9e-05, label = "early")
+ 
+  
+```
+
+**Conclusion**: The late PFT has higher transition rates in very low light levels, but then asymptotes at a lower max transition rate than the early PFT.
+
+
+
+
+
+
+
+
+
+
+
+
+###Appendix
+
+
+###Step 3: Fitting a model with PFD as the predictor and seedling transition rate as the response (all PFTs)
+```{r}
+
+mod3_all <- lm(log(daily_t_rate + 1) ~ log(PFD), data = seed_dyn_c)
+summary(mod3_all)
+```
+**Conclusion**: There is a positive relationship between the natural log of the mean daily PFD and natural log of the daily seedling transition rate when looking across all PFTs. (p = 0.0261).
+
+
+###Other: Viewing the modeled relationship (all PFTs). 
+
+Here is what the modeled relationship looks like between PFD in the seedling layer and the predicted daily seedling transition rate for all PFTs.
+```{r}
+plot(x = seed_dyn_c$PFD, y = exp(predict(mod3_all, newdata = seed_dyn_c))-1, xlab = "PFD", ylab = "Daily Seedling Transition Rate")
+```
+
+
+
+
+

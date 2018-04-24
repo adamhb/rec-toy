@@ -43,6 +43,26 @@ light_mort <- function(light = 20, seedlings_C = 750000, PFT = "early", N_smp = 
 }
 
 
+#early
+
+light.x <- 1:100
+lightmort <- c()
+for(i in light.x){
+ lightmort[i] <- light_mort(light = light.x[i], PFT = "early")
+}
+
+plot(light.x, lightmort, main = "early PFT")
+
+
+
+#late
+light.x <- 1:100
+lightmort <- c()
+for(i in light.x){
+  lightmort[i] <- light_mort(light = light.x[i], PFT = "late")
+}
+
+plot(light.x, lightmort, main = "late PFT")
 
 
 

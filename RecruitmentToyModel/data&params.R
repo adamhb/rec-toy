@@ -1,6 +1,4 @@
 
-
-
 #needed libraries
 library(magrittr)
 library(tidyverse)
@@ -27,14 +25,14 @@ library(tidyverse)
   frac_repro <- 0.10 #For trees that are of reproductive status, this is the amount of available NPP for growth and reproduction (after all respiration) that is allocated to reproduction
   frac_NPP2GPP <- 0.3 #ratio of NPP to GPP
   frac_NPP2growth <- 0.5
-  LAI_cohort <- 0.3 #A percent of total LAI in the model area. Its a cap on the total LAI that the cohort can take.
+  LAI_cohort <- 1 #A percent of total LAI in the model area. Its a cap on the total LAI that the cohort can take.
   totalbiomass2agb <- 1.7 #the ratio between total biomass and the aboveground biomass. This is important for converting between amount of carbon in an individual and the individuals dbh because I use an allometric equation developed by Chave that converts between AGB and dbh.
 
 
 #Post-NPP biotic parameters#
-background_seedling_mort <- 0.18 #from Dan Johnson 
+background_seedling_mort <- 0.36 #I doubled this from Dan Johnson 
 frac_emerg <- 0.5 #the fraction of carbon that emerges from the seedbank at each timestep
-decay_rate <- 0.51 #the annual decay rate of the seedbank
+decay_rate <- 0.85 #the annual decay rate of the seedbank
 seed_frac <- 0.5 #fracion of reproductive carbon that goes to seeds
 Z0 <- 200 #the amount of biomass it takes to make a new recruit at 1 cm of dbh
 pct_light_seedling_layer <- 0.02

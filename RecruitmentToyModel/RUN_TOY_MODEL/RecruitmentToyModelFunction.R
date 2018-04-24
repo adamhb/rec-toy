@@ -138,7 +138,7 @@ names(output) <- PFTs
     
     pct_sl <- (seedling_light * 8.48656E-04 + 0.001975)*100
     
-    precip.mod <- precip
+    precip.mod <- data.frame(day = rep(precip$day, years), rain_mm = rep(precip$rain_mm, years))
     
     
     seedbank <- c()

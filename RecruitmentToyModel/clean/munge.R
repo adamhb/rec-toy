@@ -28,9 +28,6 @@ Late <- pfts[pfts$pft == "l",]$sp
 
 
 
-
-
-
 ###############ALLOMETRY#####################
 
 #Determining the height of the seedling layer
@@ -173,6 +170,8 @@ seedling_BD2biomass <- function(BD){
   return(sum(C)*1000)
 }
 
+
+seedling_BD2biomass(2)
 
 
 #calculating the amount of biomass in each seedling
