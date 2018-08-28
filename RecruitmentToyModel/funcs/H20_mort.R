@@ -24,9 +24,9 @@
   
   #plot(weeks, sgwc)
   
-  #Step 3. Converting the soil moisture time series data to a matric potential time series
+  #Step 3. Converting the soil moisture time series data to a matric potential (mm water head / suction)
   
-  matric <- PTF_func(sgwc = sgwc)
+  matric <- PTF_func(sgwc = sgwc) * 1e5
   #plot(weeks, matric)
   
   #creating a dataframe to store the moisture and (later) mortality data
@@ -47,7 +47,8 @@ plot(days, matric_days)
 
 
 #creating deficit days for the whole 22 week period
-def_func <- function(soil_moist, thresh, window){
+def_func <- function(soil_moist, thresh.x, window, dPFT){
+  thresh <- thresh.x[dPFT]
   def <- (abs(thresh) - abs(soil_moist))*-1
   no_def <- def < 0 
   def[no_def] <- 0
@@ -58,9 +59,13 @@ def_func <- function(soil_moist, thresh, window){
   return(deficit_days)
 }
 
+
+def_func(thresh.x = thresh.xx, soil_moist = matric_days, window = 126, dPFT = "DI")
+
+
 #creating deficit days for the drought intolerant PFTs over the 18 week period when soil moisture was measured.
-deficit_days_DI <- def_func(soil_moist = matric_days, thresh = thresh["DI"], window = 18*7)[126]
-deficit_days_DT <- def_func(soil_moist = matric_days, thresh = thresh["DT"], window = 18*7)[126]
+deficit_days_DI <- def_func(soil_moist = matric_days, thresh = thresh, dPFT = "DI", window = 18*7)[126]
+deficit_days_DT <- def_func(soil_moist = matric_days, thresh = thresh, dPFT = "DT", window = 18*7)[126]
 
 
 dr_mort_DI <- engelbrecht_mort_data %>%
@@ -78,21 +83,27 @@ DI_dr_lm <- lm(data = DI_dr_data, formula = mort~def_days)
 DT_dr_data <- data.frame(def_days = c(0,deficit_days_DT), mort = c(0, dr_mort_DT$mort_rate))
 DT_dr_lm <- lm(data = DT_dr_data, formula = mort~def_days)
 
+
+coef(DI_dr_lm)[2]
+coef(DI_dr_lm)[1]
+
+P1H20 <- c(4.97e-08, 5.07e-08)
+P2H20 <- c(-3.93e-17, -2.45e-17)
+
+
 #inputs: 1) deficit days over the preceeding 18 week period. This is the absolute value of the matric potential (kpa) below a wilting point summed over the preceeding 126 days.
-H20_mort <- function(deficit_days, PFT){
+H20_mort <- function(deficit_days, PFT, P1H20.x = P1H20, P2H20.x = P2H20){
   ifelse(PFT == "DI",
-         mort_rate <- deficit_days * coef(DI_dr_lm)[2] + coef(DI_dr_lm)[1],
-         mort_rate <- deficit_days * coef(DT_dr_lm)[2] + coef(DT_dr_lm)[1])
-  return(mort_rate/(18*7))
+         mort_rate <- deficit_days * P1H20.x[1] + P2H20.x[1],
+         mort_rate <- deficit_days * P1H20.x[2] + P2H20.x[2])
+  return(mort_rate/(window.x))
 }
 
 
-
-
-
+#H20_mort(PFT = "DT", deficit_days)
 
   
-  
+#H20_mort(deficit_days = 20, PFT = "DT")
   
   
   

@@ -15,9 +15,6 @@ for(i in 1:length(daily_rain)){
 daily_rain_4_one_year <- append(daily_rain_4_one_year, daily_rain_4_one_year[356:360])
 
 
-
-
-
 #cleaning the PFT data and creating lists of early PFTs vs. late PFTs.
 pfts$sp <- paste0(pfts$g," ",pfts$s)
 names(pfts)[9] <- "Latin"
@@ -181,6 +178,10 @@ seedling_BD2biomass(2)
 Z0_seedling_e <- seedling_BD2biomass(BD = BDe)
 Z0_seedling_l <- seedling_BD2biomass(BD = BDl)
 
+#instead of the biomass values above I'm going to use the following prescribed parameters that I'm estimating based on what FATES uses for the amount of carbon in their smallest size class(0.37 dbh). These params are the amount of carbon in seedlings rather than the amount of biomass..
+
+Z0_seedling_e <- 35
+Z0_seedling_l <- 40
 
 
 

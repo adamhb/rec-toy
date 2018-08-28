@@ -1,0 +1,113 @@
+Trema integerrima
+
+ws
+
+
+
+
+
+
+bagw   = (p1 * (wood_density*d**2.0_r8*h)**p2)/c2b
+
+
+
+
+
+
+
+
+dhdd = exp(p1e) * ( 2.0_r8*p3*d**(p2-1.0_r8+p3*log(d))*log(d) + &
+               p2*d**(p2-1.0_r8+p3*log(d)) )
+
+
+fates_allom_d2h1 = 0.64
+fates_allom_d2h2 = 0.37
+fates_allom_d2h3 = -999.9
+
+
+
+ fates_allom_agb1 = 0.06896, 0.06896, 0.06896, 0.06896, 0.06896, 0.06896, 
+    0.06896, 0.06896, 0.06896, 0.06896, 0.06896, 0.01, 0.01, 0.01 ;
+
+ fates_allom_agb2 = 0.572, 0.572, 0.572, 0.572, 0.572, 0.572, 0.572, 0.572, 
+    0.572, 0.572, 0.572, 0.572, 0.572, 0.572 ;
+
+ fates_allom_agb3 = 1.94, 1.94, 1.94, 1.94, 1.94, 1.94, 1.94, 1.94, 1.94, 
+    1.94, 1.94, 1.94, 1.94, 1.94 ;
+
+ fates_allom_agb4 = 0.931, 0.931, 0.931, 0.931, 0.931, 0.931, 0.931, 0.931, 
+    0.931, 0.931, 0.931, 0.931, 0.931, 0.931 ;
+
+
+
+frac rec params
+
+    frac_rec <- function(light = 5e6, t_window.x = c(5,8), PFT = "early", seedlings_C = 750000, N_smp = 20, p1e.x = 0.7618, p1l.x = 0.2211, p2e.x = 0.0039, p2l.x = 0.0145, g_param = c(1.07, 1.00)){
+
+
+
+Alibertia edulis, Rubia, 26.54, 76 29 97 28 0.0517 2003 8.07 5.22 36.17 20.23
+Anaxagorea panamensis, Annona, 19.58, 87 30 100 30 n.s. 2003 2.37 49.37 9.65 101.13
+Andira inermis Faboid 31.03 41 29 60 29 n.s. 2001
+Beilschmiedia pendula Laura 100.00 0 30 53 30 <0.0001* 2001 47.69 79.59 2915.59 3175.57
+Brosimum alicastrum Mora 13.84 93 30 100 30 n.s. 2003 18.20 19.15 179.26 208.33
+Brosimum utile Mora 59.71 40 30 100 30 <0.0001* 2003
+Calophyllum longifolium Clusia 70.00 33 30 83 30 0.0002* 2003 14.53 38.61 127.01 151.70
+Capparis frondosa Brassica 8.11 100 30 100 30 n.s. 2003 61.04 74.53 860.13 847.49
+Casearia arguta Flacourtia 14.15 90 29 93 30 n.s. 2003
+Cordia alliodora Boragina 25.77 60 30 79 30 n.s. 2003 2.41 1.34 32.15 66.75
+Crossopetalum parviflorum Celastra 19.58 87 30 100 29 n.s. 2003
+Cupania sylvatica Sapinda 13.24 84 31 97 29 n.s. 2001 27.12 18.35 32.96 8.09
+Dipteryx panamensis Faboid 0.00 73 30 73 30 n.s. 2001 1.14 1.03 21.70 28.32
+Faramea occidentalis Rubia 8.11 100 30 100 30 n.s. 2003 614.68 349.21 1771.70 1282.36
+Garcinia intermedia Clusia 1.67 100 30 100 30 n.s. 2003 96.23 73.66 261.25 200.24
+Guapira standleyana Nyctagina 13.84 93 30 93 30 n.s. 2003 4.40 2.85 17.68 8.09
+Guarea guidonia Melia 64.34 33 27 100 30 <0.0001* 2003 31.14 57.75 132.64 157.77
+Herrania purpurea Malva 46.66 53 30 97 30 0.0002* 2003 10.47 11.87 13.67 12.14
+Hybanthus prunifolius Viola 21.34 77 30 100 26 0.0105 2003 764.91 663.92 1888.26 1274.27
+Hymenaea courbaril Caesal 21.74 60 30 77 30 n.s. 2001
+Inga cocleensis 4 Mimos 14.25 87 30 97 30 n.s. 2003
+Inga multijuga 4 Mimos 4.17 77 30 83 30 n.s. 2001
+Inga sapindoides Mimos 28.18 77 30 100 29 0.0105 2003 6.04 6.49 18.49 22.25
+Lacistema aggregatum Lacistemata 46.67 53 30 100 30 <0.0001* 2001 34.81 33.47 125.40 133.50
+
+
+C:\Users\ahanb\OneDrive\Documents\Recruitment_Toy_Model_non_Git\Non_Driver_Data
+
+ Latin d_index
+1           Alibertia edulis   26.54
+2      Anaxagorea panamensis   19.58
+6             Brosimum utile   59.71
+7    Calophyllum longifolium      70
+8          Capparis frondosa    8.11
+9            Casearia arguta   14.15
+11 Crossopetalum parviflorum   19.58
+12         Cupania sylvatica   13.24
+13       Dipteryx panamensis       0
+14      Faramea occidentalis    8.11
+15       Garcinia intermedia    1.67
+18         Herrania purpurea   46.66
+19     Hybanthus prunifolius   21.34
+20        Hymenaea courbaril   21.74
+22            Inga multijuga   Mimos
+24      Lacistema aggregatum   46.67
+26          Licania platypus   33.33
+27      Mouriri myrtilloides   11.08
+29            Ouratea lucens    3.33
+30       Picramnia latifolia   28.57
+31            Piper trigonum   82.14
+33     Pouteria unilocularis   34.62
+36   Psychotria horizontalis    3.57
+38           Sorocea affinis   46.67
+39          Swartzia simplex    4.81
+42           Thevetia ahouai   23.37
+44      Unonopsis panamensis   73.35
+47         Xylopia macrantha      64
+48        Xylosma chlorantha      24
+
+
+P1H20.x = P1H20, P2H20.x = P2H20
+
+
+
+Calenge, C. 2006. The package adehabitat for the R software: a tool for the analysis of space and habitat use by animals. Ecological modelling, 197, 516–519.

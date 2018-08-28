@@ -6,7 +6,6 @@ library(lme4)
 #creating a serial number for each observation
 seed_dyn$OBnum <- seq(1:length(seed_dyn$TAGF))
 
-
 #converting the shade index to relative irradiance using the approach Ruger et al 2009 used with the 1993 RI data. 
 
 #creating the data to convert shd index into IR
@@ -49,11 +48,6 @@ seed_dyn$RI <- exp(predict(l_shd_m, newdata = data.frame(x = 1:length(seed_dyn$s
 #converting shade index to RI with quadratic conversion
 
 seed_dyn$RI_quad <- exp(predict(l_shd_m_quad, newdata = data.frame(x = 1:length(seed_dyn$shd), shd = seed_dyn[,"shd"], shd2 = (seed_dyn[,"shd"])^2)))
-
-
-
-
-
 
 
 

@@ -1,4 +1,24 @@
-light_mort <- function(light = 20, seedlings_C = 750000, PFT = "early", N_smp = 200){
+
+
+#getting solar radiation data for 1994 for bci
+
+class(solar_bci$dates)
+
+bci_solar_1994 <- solar_bci[solar_bci$dates >= as.Date("1994-01-01") & solar_bci$dates <= as.Date("1994-12-31"),]
+
+attach(bci_solar_1994)
+
+plot(bci_solar_1994$dates, bci_solar_1994$MJm2)
+plot(bci_solar_1994$dates, FATES_vars$FSDS[1:365]/1e6)
+
+#the mean TOC solar insolation per day per meter at bci in 1994 (Joules). 
+mean_TOC_1994 <- mean(bci_solar_1994$MJm2) * 1e6
+
+undebug(light_mort)
+
+light_mort <- function(light = 5000000, seedlings_C = 750000, PFT = "early", N_smp = 200){
+  
+  pct_light <- (light / 15750113) * 100
   
   ifelse(PFT == "late", Z0_seedling <- Z0_seedling_l, Z0_seedling <- Z0_seedling_e)
   
@@ -26,10 +46,9 @@ light_mort <- function(light = 20, seedlings_C = 750000, PFT = "early", N_smp = 
   
   #B <- rnorm(mean = A, sd = B_sd, n = 1)
   
-  
-  ifelse(PFT == "late" | (PFT == "early" & light <= 18.98),
-         Ml <- A * exp(-B*light),
-         Ml <- A * exp(-B*18.98))
+  ifelse((test = PFT == "late" | (PFT == "early" & pct_light <= 18.98)), 
+         yes = Ml <- A * exp(-B*pct_light),
+         no = Ml <- A * exp(-B*18.98))
   
   Pm_yr <- 1 - exp(-Ml*12)
   
@@ -42,27 +61,22 @@ light_mort <- function(light = 20, seedlings_C = 750000, PFT = "early", N_smp = 
   return(frac_mort)
 }
 
+light_mort(light = 1e4)
 
-#early
-
-light.x <- 1:100
-lightmort <- c()
-for(i in light.x){
- lightmort[i] <- light_mort(light = light.x[i], PFT = "early")
-}
-
-plot(light.x, lightmort, main = "early PFT")
+debug(light_mort)
 
 
 
-#late
-light.x <- 1:100
-lightmort <- c()
-for(i in light.x){
-  lightmort[i] <- light_mort(light = light.x[i], PFT = "late")
-}
 
-plot(light.x, lightmort, main = "late PFT")
+
+undebug(light_mort)
+
+
+c(1e6, 2e6, 3e6, 4e6, 8e6, 10e6, 15e6, 20e6)
+light_mort(light = , PFT = "early", N_smp = 20) 
+
+
+light_mort(light = 1:100, PFT = "early")
 
 
 

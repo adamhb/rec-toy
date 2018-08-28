@@ -24,16 +24,25 @@ frac_emerg_lm <- lm(frac_emerg_data~rain)
 
 #EMERGENCE FUNCTION#
 #input: the sum of the prior week's precipitation
-frac_emerg_func <- function(rain){
-  frac_emerg <- ((coefficients(frac_emerg_lm)[2])/20)*rain + coefficients(frac_emerg_lm)[1]
+
+P1emerg <- round(coefficients(frac_emerg_lm)[2], digits = 4)
+P2emerg <- round(coefficients(frac_emerg_lm)[1], digits = 3)
+
+
+#P1emerg <- coefficients(frac_emerg_lm)[2]
+#P2emerg <- coefficients(frac_emerg_lm)[1]
+
+frac_emerg_func <- function(rain, P1emerg.x = P1emerg, P2emerg.x = P1emerg){
+  frac_emerg <- (P1emerg.x)*rain + P2emerg.x
   return(frac_emerg)
 }
+
 frac_emerg_func(60)
 #END EMERGENCE FUNCTION
 
 
 
-
+debug(frac_emerg_func)
 
 
 
