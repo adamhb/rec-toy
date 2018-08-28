@@ -12,8 +12,6 @@ early.bench <- 15
 late.bench <- 35
 
 
-
-
 #graphing the recruitment rates with just the totals and comparing FATES current to the submodel
 pft_total <- full_output %>% filter(date >= as.POSIXct("2005-01-01")) %>% group_by(date) %>% summarise(total_R = sum(R)) %>% .$total_R
 
