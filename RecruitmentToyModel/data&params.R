@@ -34,7 +34,8 @@ background_seedling_mort <- 0.36 #I doubled this from Dan Johnson
 frac_emerg <- 0.5 #the fraction of carbon that emerges from the seedbank at each timestep
 decay_rate <- 0.85 #the annual decay rate of the seedbank
 seed_frac <- 0.5 #fracion of reproductive carbon that goes to seeds
-Z0 <- 200 #the amount of biomass it takes to make a new recruit at 1 cm of dbh
+Z0 <- 200 #the amount of carbon it takes to make a new recruit at 1 cm of dbh
+Z0_FATES <-  (0.00830034180479156 + 0.0120082249520208 + 0.0168634363557888 +  0.0122741004946737) * 1000 #amount of carbon (g) required to make a new recruit of 0.37 cm dbh in FATES
 pct_light_seedling_layer <- 0.02
 #user_defined_water_def <- c(0, 100000, 150000, 200000, 0, 0, 0,0,0,0,0,0)
 

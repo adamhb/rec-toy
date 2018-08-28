@@ -1,0 +1,300 @@
+---
+title: "Exploring FATES Driver Data"
+author: "Adam Hanbury-Brown"
+date: "May 15, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+
+```{r}
+
+output1 <- first_output
+
+
+#graphing raw NPP data as it comes from FATES (gC m2 per s)
+#plot(hour, NPP)
+
+#graphing daily NPP (g C m2 per day)
+ggplot(data = output1, aes(x = as.Date(date), y = NPP)) +
+  geom_line() +
+  scale_x_date(breaks = date_breaks("years"), labels = date_format("%b-%y")) +
+  ylab(bquote('NPP (gC per m2 per day)')) 
+
+
+#the relationship between dbh and the effective fraction of NPP that gets allocated to reproduction within a cohort
+
+# Dmax
+# early  late 
+# 575   321 
+
+
+dbh_test <- seq(from = 1, to = 1000, length = 100)
+
+efrac_early <- c()
+for(i in 1:length(dbh_test)){
+efrac_early[i] <- efrac(N = 400, co_dbh_ind = dbh_test[i],  PFT = "early")
+}
+
+efrac_late <- c()
+for(i in 1:length(dbh_test)){
+  efrac_late[i] <- efrac(N = 400, co_dbh_ind = dbh_test[i],  PFT = "late")
+}
+
+
+efrac_pft <- c(rep("early", length(efrac_late)), rep("late", length(efrac_late)))
+
+efrac_test <- append(efrac_early, efrac_late)
+
+efrac_vs_size <- data.frame(dbh = dbh_test, pft = efrac_pft, efrac = efrac_test)
+
+
+#showing the relationship between size and the effective fraction of NPP allocated to reproduction
+
+ggplot(data = efrac_vs_size, aes(x = dbh, y = efrac, color = pft)) +
+  geom_line()+
+  ylab(bquote('effective fraction of NPP allocated to repro.')) +
+  xlab(bquote('dbh (mm)')) 
+
+
+
+
+#carbon for reproduction per m2 per day (late) with cohort dbh of 
+
+ggplot(data = output1, aes(x = as.Date(date), y = c_repro)) +
+  geom_line() +
+  scale_x_date(breaks = date_breaks("years"), labels = date_format("%b-%y")) +
+  ylab(bquote('carbon for repro (gC per m2 per day)')) 
+
+
+
+#carbon for reproduction per ha per day (late) with cohort dbh of 
+
+ggplot(data = output1, aes(x = as.Date(date), y = c_repro * 10000)) +
+  geom_line() +
+  scale_x_date(breaks = date_breaks("years"), labels = date_format("%b-%y")) +
+  ylab(bquote('carbon for repro (gC per ha per day)')) 
+
+
+
+```
+
+
+
+```{r, echo=FALSE}
+
+
+#looking at TOC light over time
+ggplot(data = output1, aes(x = as.Date(date), y = FSDS/1e6)) +
+  geom_line() +
+  scale_x_date(breaks = date_breaks("years"), labels = date_format("%b-%y")) +
+  ylab(bquote('TOC insolation (MJ per day)')) 
+
+#looking at seed layer light at 3% of TOC
+ggplot(data = output1, aes(x = as.Date(date), y = light/1e6)) +
+  geom_line() +
+  scale_x_date(breaks = date_breaks("years"), labels = date_format("%b-%y")) +
+  ylab(bquote('seedling layer insolation (MJ per day)')) 
+
+
+#looking at seed layer light at 20% of TOC
+ggplot(data = output1, aes(x = as.Date(date), y = FSDS/1e6*0.2)) +
+  geom_line() +
+  scale_x_date(breaks = date_breaks("years"), labels = date_format("%b-%y")) +
+  ylab(bquote('seedling layer insolation (MJ per day)')) 
+
+#light during the time the Kobe experiments were done
+plot(bci_solar_1994$dates, bci_solar_1994$MJm2)
+
+
+#relationship between light and seedling mortality
+
+test_light <-  seq(from = 0.1e6, to = 20e6, by = .1e6)
+
+seed_mort_early <- c()
+for(i in 1:length(test_light)){
+  seed_mort_early[i] <-  light_mort(light = test_light[i], PFT = "early", N_smp = 20)
+}
+
+seed_mort_late <- c()
+for(i in 1:length(test_light)){
+  seed_mort_late[i] <-  light_mort(light = test_light[i], PFT = "late", N_smp = 20)
+}
+
+
+pft_test <- c(rep("early", length(seed_mort_early)), rep("late", length(seed_mort_early)))
+
+
+
+mort_rate <- append(seed_mort_early, seed_mort_late)
+
+mort_vs_light <- data.frame(test_light = test_light, pft = pft_test, mort_rate = mort_rate)
+
+
+  
+ggplot(data = mort_vs_light, aes(x = test_light/1e6, y = mort_rate*365, color = pft)) +
+  geom_line()+
+  ylab(bquote('yearly mortality rate')) +
+xlab(bquote('seedling layer light (MJ / day)')) 
+  
+ggplot(data = mort_vs_light, aes(x = test_light/1e6, y = mort_rate, color = pft)) +
+  geom_line()+
+  ylab(bquote('daily mortality rate')) +
+  xlab(bquote('seedling layer light (MJ / day)')) 
+
+
+```
+
+
+```{r, echo=FALSE}
+
+#looking at the relationship between light and the fraction recruiting out
+
+frac_rec_early <- c()
+for(i in 1:length(test_light)){
+  frac_rec_early[i] <-  frac_rec(light = test_light[i], PFT = "early", N_smp = 50)
+}
+
+
+frac_rec_late <- c()
+for(i in 1:length(test_light)){
+  frac_rec_late[i] <-  frac_rec(light = test_light[i], PFT = "late", N_smp = 50)
+}
+
+
+pft_test_rec <- c(rep("early", length(frac_rec_early)), rep("late", length(frac_rec_early)))
+
+
+frac_rec <- append(frac_rec_early, frac_rec_late)
+
+frac_rec_vs_light <- data.frame(test_light = test_light, pft = pft_test_rec, frac_rec = frac_rec)
+
+ggplot(data = frac_rec_vs_light, aes(x = test_light/1e6, y = frac_rec, color = pft)) +
+  geom_line()+
+  ylab(bquote('daily recruitment rate')) +
+  xlab(bquote('seedling layer light (MJ / day)')) 
+
+
+
+```
+
+
+
+```{r}
+
+#precipitation timeseries 
+
+ggplot(data = output1, aes(x = as.Date(date), y = precip)) +
+  geom_line() +
+  scale_x_date(breaks = date_breaks("years"), labels = date_format("%b-%y")) +
+  ylab(bquote('precip (mm / day)')) 
+
+
+#add relationship between precipitation and fraction emerging from the seed bank
+
+
+
+
+```
+
+
+
+
+
+```{r, echo=FALSE}
+output1 <- first_output
+
+#looking at SMP over time
+ggplot(data = output1[-c(1:365),], aes(x = as.Date(date), y = SMP)) +
+  geom_line() +
+  scale_x_date(breaks = date_breaks("years"), labels = date_format("%b-%y")) +
+  ylab(bquote('Soil Matric Potential (mm head)')) 
+
+
+
+#look at this in MPa
+ggplot(data = output1[-c(1:365),], aes(x = as.Date(date), y = SMP/1e5)) +
+  geom_line() +
+  scale_x_date(breaks = date_breaks("years"), labels = date_format("%b-%y")) +
+  ylab(bquote('Soil Matric Potential (MPa)')) 
+
+
+
+#looking at water deficit days for drought tolerant PFT
+ggplot(data = output1[-c(1:365),], aes(x = as.Date(date), y = water_def)) +
+  geom_line() +
+  scale_x_date(breaks = date_breaks("years"), labels = date_format("%b-%y")) +
+  ylab(bquote('drought tolerant water deficit days'))+
+  xlab(bquote('Date'))+
+  labs(title = "drought torlerant deficit days")
+
+#add in water deficit days for the drought intolerant PFT, when I generate this data.
+
+
+ggplot(data = output[[1]][-c(1:365),], aes(x = as.Date(date), y = water_def)) +
+  geom_line() +
+  scale_x_date(breaks = date_breaks("years"), labels = date_format("%b-%y")) +
+  ylab(bquote('water deficit days')) +
+  labs(title = "drought intorlerant deficit days")+
+   xlab(bquote('Date'))
+
+
+
+
+
+
+
+
+```
+
+
+
+
+```{r}
+#the relationship between water deficit days and water stress induced mortality
+
+water_def_test <- seq(from = 1, to = 6e7, length = 100)
+
+H20_mort_early <-  H20_mort(deficit_days = water_def_test, PFT = "early")
+H20_mort_late <-  H20_mort(deficit_days = water_def_test, PFT = "late")
+
+
+H20_mort_test_pft <- c(rep("early", length(H20_mort_early)), rep("late", length(H20_mort_early)))
+
+
+H20_mort_test <- append(H20_mort_early, H20_mort_late)
+
+H20_mort_vs_water_def <- data.frame(water_def = water_def_test, pft =H20_mort_test_pft, H20_mort = H20_mort_test )
+
+ggplot(data = H20_mort_vs_water_def, aes(x = water_def, y = H20_mort, color = pft)) +
+  geom_line()+
+  ylab(bquote('daily_mortality_rate')) +
+  xlab(bquote('moisture_deficit_days')) 
+
+```
+
+
+```{r}
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

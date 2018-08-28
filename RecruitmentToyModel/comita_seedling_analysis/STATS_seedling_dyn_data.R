@@ -32,6 +32,9 @@ summary(logistic_mod)
 logistic_mod_pois <- glm(R ~ RI3,family=poisson(link='log'),data=seed_dyn)
 summary(logistic_mod_pois)
 
+seed_dyn_c$t_rate %>% mean(.)
+
+seed_dyn_c_e$daily_t_rate %>% mean(.)
 
 
 
@@ -59,9 +62,10 @@ summary(mod3_l)
 
 
 
+str(seed_dyn_c_e) 
 
 
-
+seed_dyn_c_l$RI3 %>% summary(.)
 
 
 
