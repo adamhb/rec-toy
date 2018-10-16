@@ -13,7 +13,7 @@ shd_quantiles <- quantile(seed_dyn$shd, probs = c(0, 0.05, 0.25, 0.5, 0.75, 0.95
          names = TRUE, type = 7)
 shd_quantiles2 <- shd_quantiles^2
 shd_quantiles3 <- shd_quantiles^3
-lnRI_quantiles <- c(0, -3.1, -3.8, -4.1, -4.5, -5.2 , -6.1)
+lnRI_quantiles <- c(0, -3.1, -3.8, -4.1, -4.5, -5.2 , -6.1) #this I believe is from emprical data. See ruger on this.
 l_shd_data <- data.frame(shd = shd_quantiles, shd2 = shd_quantiles2, shd3 = shd_quantiles3, lnRI = lnRI_quantiles)
 
 

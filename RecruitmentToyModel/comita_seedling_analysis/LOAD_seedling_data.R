@@ -7,7 +7,10 @@ setwd("C:/Users/ahanb/OneDrive/Documents/RecruitmentToyModel/RecruitmentToyModel
 #loading the seedling dynamics data
 com_sdlg <- read.csv("comita_seedling.csv")
 head(com_sdlg)
+
+setwd("C:/Users/ahanb/OneDrive/Documents/data/BCI_FDP_Data")
 load("condit_shade.Rdata")
+
 #post-1989 shade index is for 0.5m above the ground
 seed_dyn <- readRDS("bci_seeding_data_for_Adam.RDS")
 pfts <- read.csv("PFTs.csv")

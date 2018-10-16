@@ -215,7 +215,6 @@ tmpx <- bci.full7 %>% filter(sp %in% not_in_sp) %>% group_by(sp) %>% summarise(m
 
 
 
-
 ########benchmarking with Ruger data and model##########################
 #using the pft assignments to create ruger data
 ruger_params <- read.csv(paste0(path_non_driver_data,"ruger_params_clean.csv"))
