@@ -13,12 +13,16 @@ library(reshape2)
 #untar(tarfile = "C:/Users/ahanb/OneDrive/Documents/RecruitmentToyModel/RecruitmentToyModel/FATES_output_7_16_2018/july14th-bci-variable-sla.tgz")
 
 
-#source the subfunctions
-source()
+
+
+
+
+
 
 #set path to driver data
 driver_data_path <- "C:/Users/ahanb/OneDrive/Documents/data/"
-#setwd(driver_data_path)
+#set path to subfunction scripts
+subfunctions_path <- "C:/Users/ahanb/OneDrive/Documents/rec_submodel/rec_submodel_scripts/RecruitmentToyModel/funcs"
 
 bci_precip_new <- read.csv(paste0(driver_data_path,"bci_driver_data/bci_rain_new.csv")) #read in the input precipitation data
 
@@ -121,9 +125,11 @@ for(i in dir()){
 #setwd("C:/Users/ahanb/OneDrive/Documents/RecruitmentToyModel/RecruitmentToyModel")
 
 run_name <- "bci_3pct_light"
+transition_probs <- T
 
 #parameters
 #scenario
+pft_names <- c("earlydi", "earlydt", "latedi", "latedt")
 percent_light <- 0.03
 dbh.x <- 500 #dbh in mm
 N_co.x <- 800  #the number of individuals in a cohort
@@ -138,9 +144,17 @@ names(frac_repro) <- pft_names
 seed_frac <- 0.5 #the fraction of reproductive carbon that gets allocated to seeds
 
 #seed bank and emergence
+seed_mass <- c(0.09272, 0.09272, 0.0954152, 0.0954152)
+seed_mass <- default_seed_mass
+names(seed_mass) <- pft_names
 decay_rate <- 0.51 #the annual decay rate of the seedbank
-P1emerg <- 2e-04
-P2emerg <- 0.002
+beta_emerg <- beta_emerg_default
+#beta_emerg <- c(0.074, 0.056, 0.03617053, 0.07876964)
+names(beta_emerg) <- pft_names
+a_emerg <- c(5e4,5e4,2e4,2e4)
+names(a_emerg) <- pft_names
+b_emerg <- c(1.05,1.05, 1, 1)
+names(b_emerg) <- pft_names
 
 #seedling mort-H20
 background_seedling_mort <- default_background_seedling_mort #see script called background_seedling_mort.R for derivation
@@ -152,18 +166,22 @@ names(thresh.xx) <- pft_names
 window.x <- 18*7 #the number of days over which to calculate the moisture deficit
 
 #light mort
-#P1light
-#P2light
-Z0_seedling_e <- 35
-Z0_seedling_l <- 40
+P1light_mort <- c(0.752, 0.752, 0.0241, 0.0241)
+names(P1light_mort) <- pft_names
+P2light_mort <- c(0.1368, 0.1368, 0.0404, 0.0404)
+names(P2light_mort) <- pft_names
+Z0_seedling <- c(35,35,40,40)
+names(Z0_seedling) <- pft_names
 
-#seedling transition to 1 cm size class
 
-P1rec <- c(0.7618, 0.2211)
-P2rec <- c(0.0115, 0.0145)
-N_smp <- 500
-SDmultiplier <- 1.2
-rec_window <- c(8,5)
+#transition from seedling to adult recruit
+a_rec <- c(7,7,20,20)
+names(a_rec) <- pft_names
+b_rec <- c(1.0653, 1.0653, 0.8615, 0.8615)
+names(b_rec) <- pft_names
+beta_rec <- beta_rec_default # change this to mean if needed in beta rec derivation
+#beta_rec <- c(0.00206, 0.00206, 0.00049, 0.00049)
+names(beta_rec) <- pft_names
 Z0 <- 165
 
 #initial conditions
@@ -173,6 +191,9 @@ litter_0 = 10000
 
 plot_input_vars <- "Y"
 
+#source the model subfunctions
+setwd(subfunctions_path)
+source(dir()[grep(x = dir(), pattern = ".R")])
 
 #creating a dataframe of the input variables from FATES
 hour <- 0:113880

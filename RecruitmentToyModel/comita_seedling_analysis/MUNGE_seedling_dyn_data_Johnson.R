@@ -237,6 +237,10 @@ seed_dyn_c <- seed_dyn %>%
   summarise(start.x = mean(start), start.date.x = min(start.date), stop.x = mean(stop), stop.date.x = min(stop.date), shade = mean(shd), RI = mean(RI), RI_quad = mean(RI_quad), RI3 = mean(RI3), Nt_1 = length(unique(TAGF)), N_trans = sum(R)) %>%
   mutate(t_rate = N_trans / Nt_1, daily_t_rate = t_rate/(stop.x-start.x))
 
+str(seed_dyn_c)
+
+seed_dyn %>% filter(Nt_1 > 0) %>%
+  .$daily_t_rate %>% summary(.)
 
 
 

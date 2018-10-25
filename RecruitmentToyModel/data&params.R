@@ -9,6 +9,7 @@ library(tidyverse)
   #2) load all necessary data
 
 #1) default parameters
+  pft_names <- c("earlydi", "earlydt", "latedi", "latedt")
 
 #Pre-NPP abiotic parameters (just for creating NPP in the toy model)#
   epsilon <- (0.99 /1e6) #the amount of carbon (g) converted to GPP per MJ of solar insolation. Source: https://www.ncbi.nlm.nih.gov/pubmed/18244937
@@ -20,8 +21,9 @@ library(tidyverse)
   
 
 #Pre-NPP biotic parameters#
-  Dmax <- c(575,321) #maximum diamater (mm)
-      names(Dmax) <- c("early", "late")
+  Dmax <- dmax_vals #these are the default parameters based off of BCI FDP data
+  Dmax <- c(934.2857, 846.3182, 556.7179, 561.3786) #maximum diamater (mm)
+      names(Dmax) <- pft_names
   frac_repro <- 0.10 #For trees that are of reproductive status, this is the amount of available NPP for growth and reproduction (after all respiration) that is allocated to reproduction
   frac_NPP2GPP <- 0.3 #ratio of NPP to GPP
   frac_NPP2growth <- 0.5
@@ -30,7 +32,8 @@ library(tidyverse)
 
 
 #Post-NPP biotic parameters#
-background_seedling_mort <- 0.36 #I doubled this from Dan Johnson 
+background_seedling_mort <- default_background_seedling_mort #see script called background_seedling_mort.R for derivation
+#background_seedling_mort <- Dan Johnson said it was 0.18
 frac_emerg <- 0.5 #the fraction of carbon that emerges from the seedbank at each timestep
 decay_rate <- 0.85 #the annual decay rate of the seedbank
 seed_frac <- 0.5 #fracion of reproductive carbon that goes to seeds
@@ -64,4 +67,5 @@ l_mort_params <- read.csv("light_mort_params_kobe.csv")
 bci_soil_moisture <- read.csv("bci_soil_moisture.csv")
 bci_precip <- read.csv("BCIprecipdata.csv")
 load("bcifull.RData")
+
 

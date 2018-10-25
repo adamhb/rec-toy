@@ -61,5 +61,28 @@ bci.full %>%
 
 
 
+#getting pft-specific dmax values
+dmax_vals <- bci.full %>%
+  select(dbh, sp) %>%
+  #filter(sp %in% Late) %>%
+  na.omit(.) %>%
+  group_by(sp) %>%
+  .[order(.$dbh, decreasing = TRUE),] %>%
+  do(head(.)) %>% group_by(sp) %>%
+  summarise(dmax = mean(dbh)) %>%
+  merge(., pfts_sept_2018, by = "sp") %>%
+  group_by(e_vs_l, dpft) %>%
+  summarise(dmax_val = mean(dmax)) %>%
+  filter(dpft != "0") %>% .$dmax_val
+
+names(dmax_vals) <- pft_names
+
+dmax_vals["latedi"]
+
+
+%>%
+  arrange(., dmax) %>%
+  ggplot(mapping = aes(x = dmax)) +
+  geom_histogram(bins = 10)
 
 
