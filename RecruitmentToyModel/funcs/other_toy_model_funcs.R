@@ -137,6 +137,32 @@ multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
 
 
 
+def_func <- function(soil_moist, thresh.x = thresh.xx[PFT], window){
+  thresh <- thresh.x
+  def <- (abs(thresh) - abs(soil_moist))*-1
+  no_def <- def < 0 
+  def[no_def] <- 0
+  deficit_days <- c()
+  for(i in 1:length(def)){
+    deficit_days[i] <- ifelse(i < window, sum(def[1:i]), sum(def[(i-window):i]))
+  }
+  return(deficit_days)
+}
 
 
+
+
+
+#set theme for the plots
+adams_theme <- theme(plot.title = element_text(hjust = 0.5, size = 20),
+                     strip.text.x = element_text(size = 18),
+                     legend.title = element_blank (),
+                     axis.title.x = element_text (size = 15), # change the axis title
+                     axis.title.y = element_text (size = 15),
+                     axis.text.x = element_text (size = 14, colour = "black"),
+                     axis.text.y = element_text (size = 14, colour = "black"),
+                     legend.text = element_text (size = 15))
+year_axis <-  scale_x_date(breaks = date_breaks("2 years"), labels = date_format("%Y"))
+smooth_line <- geom_smooth(size = 1.8, method = "loess", span = .01, se = F)
+smoother_line <- geom_smooth(size = 1.8, method = "loess", span = .1, se = F)
 

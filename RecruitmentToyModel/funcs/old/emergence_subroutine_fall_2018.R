@@ -215,7 +215,6 @@ emerg_func_version_with_seed_mass()
 
 emerg_func <- function(a = a_emerg[PFT], b = b_emerg[PFT], rain = 71, avg_rain = 71, seedbank.x = 40000){
 
-  
   log10_frac_emerg <- log10(a) + b*log10(rain/avg_rain) 
   
   frac_emerg <- 10^log10_frac_emerg 

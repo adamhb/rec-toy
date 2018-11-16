@@ -125,7 +125,9 @@ for(i in dir()){
 #setwd("C:/Users/ahanb/OneDrive/Documents/RecruitmentToyModel/RecruitmentToyModel")
 
 run_name <- "bci_3pct_light"
-transition_probs <- T
+avg_precip <- 71 #precipitation in mm over two weeks (the annual average)
+avg_l <- 61 #the average total solar radiation load (MJ per m2) at the forest floor over 6 months (annual average)
+
 
 #parameters
 #scenario
@@ -151,14 +153,15 @@ decay_rate <- 0.51 #the annual decay rate of the seedbank
 beta_emerg <- beta_emerg_default
 #beta_emerg <- c(0.074, 0.056, 0.03617053, 0.07876964)
 names(beta_emerg) <- pft_names
-a_emerg <- c(5e4,5e4,2e4,2e4)
+a_emerg <- rep(0.5/365, 4) #the average daily fraction of the seedbank that moves to the seedling pool (annual average)
 names(a_emerg) <- pft_names
-b_emerg <- c(1.05,1.05, 1, 1)
+b_emerg <- c(1.05,1.05, 1, 1) #the precipitation response parameter for emergence
 names(b_emerg) <- pft_names
 
 #seedling mort-H20
 background_seedling_mort <- default_background_seedling_mort #see script called background_seedling_mort.R for derivation
 #background_seedling_mort <- 0.2875200 0.2875200 0.2094371 0.2094371
+names(background_seedling_mort) <- pft_names
 P1H20 <- c(4.97e-08, 5.07e-08, 4.97e-08, 5.07e-08)
 P2H20 <- c(-3.93e-17, -2.45e-17, -3.93e-17, -2.45e-17)
 thresh.xx <- c(-167973.2, -350000.0, -167973.2, -350000.0) #the water moisture threshold (mm of head of water) when plants start to stress
@@ -175,13 +178,11 @@ names(Z0_seedling) <- pft_names
 
 
 #transition from seedling to adult recruit
-a_rec <- c(7,7,20,20)
+a_rec <- a_rec_default #this is the daily beta rec default from liza comitas data
+a_rec <- rep(0.0002,4)
 names(a_rec) <- pft_names
 b_rec <- c(1.0653, 1.0653, 0.8615, 0.8615)
 names(b_rec) <- pft_names
-beta_rec <- beta_rec_default # change this to mean if needed in beta rec derivation
-#beta_rec <- c(0.00206, 0.00206, 0.00049, 0.00049)
-names(beta_rec) <- pft_names
 Z0 <- 165
 
 #initial conditions

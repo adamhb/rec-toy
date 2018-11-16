@@ -45,17 +45,17 @@ rec_per_year <- seed_dyn_original %>%
   ungroup(.)
 
 
-#beta_rec for early versus late
+#daily beta_rec for early versus late
 beta_rec <- cbind(N_start, rec_per_year[,c(3,4,5)]) %>%
-  mutate(beta_rec = rec_rate / Nstart) %>%
+  mutate(beta_rec = (rec_rate / Nstart)/26) %>%
   #filter(census != 13) %>%
   group_by(e_vs_l) %>%
-  summarise(mean_beta_rec = median(beta_rec)) %>%
+  summarise(mean_beta_rec = mean(beta_rec)) %>%
   .$mean_beta_rec
 
 
 #this is the mean 6 month transition probability from seedling to 1 cm recruit 
-beta_rec_default <- (c(rep(beta_rec[1], 2), rep(beta_rec[2], 2))) / 2
+a_rec_default <- (c(rep(beta_rec[1], 2), rep(beta_rec[2], 2))) 
 
 #if these beta rec values appear to be very off we can take the mean not the medium to get more, then we can check with the other form the data is in. The publically available version of Dan and Liza's data.
 

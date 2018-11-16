@@ -146,7 +146,7 @@ dev.off()
 
 
 #############################################
-#seasonal cycle#############################
+#graphing the seasonal cycle of emergence#############################
 
 
 #making an average seasonal cycle for the fraction emerging
