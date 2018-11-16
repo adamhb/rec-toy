@@ -119,11 +119,12 @@ for(i in dir()){
 #set up the model run
 #setwd("C:/Users/ahanb/OneDrive/Documents/RecruitmentToyModel/RecruitmentToyModel")
 
-run_name <- "bci_3pct_light_test"
+run_name <- "bci_3pct_light_test_new_emerg"
 
 #parameters
 #site and scenario params
 avg_precip <- 71 #precipitation in mm over two weeks (the annual average)
+avg_SMP <- -60326 #
 avg_l <- 61 #the average total solar radiation load (MJ per m2) at the forest floor over 6 months (annual average)
 pft_names <- c("earlydi", "earlydt", "latedi", "latedt")
 percent_light <- 0.03
@@ -320,17 +321,17 @@ for(PFT in pft_names){
       #seedbank dynamics
       seedbank[i+1] <- seedbank[i] %>%
         - (decay_rate/365 * seedbank[i]) %>%
-        - emerg_func(precip = (ifelse(test= i > 14, yes = sum(input_vars$precip[(i-13):i]), no = 14 * input_vars$precip[i])), seedbank.x = seedbank[i])$C_emerg %>%
+        - emerg_func(SMP.x = (ifelse(test= i > 14, yes = mean(input_vars$SMP[(i-13):i]), no = input_vars$SMP[i])), seedbank.x = seedbank[i])$C_emerg %>%
         + (seed_frac * input_vars$c_repro[i])
       
-      frac_emerging[i+1] <- emerg_func(precip = (ifelse(test= i > 14, yes = sum(input_vars$precip[(i-13):i]), no = 14 * input_vars$precip[i])), seedbank.x = seedbank[i])$frac_emerg
+      frac_emerging[i+1] <- emerg_func(SMP.x = (ifelse(test= i > 14, yes = mean(input_vars$SMP[(i-13):i]), no = input_vars$SMP[i])), seedbank.x = seedbank[i])$frac_emerg
       
       #seedling pool dynamics
       
       #if(i == 3653){browser()}
       
       seedpool[i+1] <- seedpool[i] %>%
-        + (emerg_func(precip = (ifelse(test= i > 14, yes = sum(input_vars$precip[(i-13):i]), no = 14 * input_vars$precip[i])), seedbank.x = seedbank[i])$C_emerg)  %>%
+        + (emerg_func(SMP.x = (ifelse(test= i > 14, yes = mean(input_vars$SMP[(i-13):i]), no = input_vars$SMP[i])), seedbank.x = seedbank[i])$C_emerg)  %>%
         - ((light_mort(light = ifelse(test = i > 90, yes = sum(input_vars$light[(i-90):i] +0.0001), no = input_vars$light[i]*90 + 0.00001), seedpool.x = seedpool[i])) * seedpool[i]) %>%
         - (input_vars$H20_mort_rate[i] * seedpool[i]) %>%
         - (seedpool[i]*background_seedling_mort[PFT]/365) %>%
